@@ -10,6 +10,7 @@ namespace ChattyDAL.Models
     {
         public string Login { get; set; }
         public string DisplyedName { get; set; }
+        public string Password { get; set; }
         public string ProfilePicturePath { get; set; }
     }
 }
