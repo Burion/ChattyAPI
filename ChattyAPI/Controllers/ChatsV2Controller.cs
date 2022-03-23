@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ChattyServices.Interfaces;
 using ChattyServices.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChattyAPI.Controllers
 {
@@ -18,6 +19,7 @@ namespace ChattyAPI.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("{userId}")]
         public IActionResult Get(string userId)
         {
