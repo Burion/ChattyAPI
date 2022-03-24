@@ -35,7 +35,7 @@ namespace ChattyAPI
                 {
                     policy.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowAnyOrigin();
                 });
             });
 
