@@ -21,45 +21,46 @@ namespace ChattyAPI.Controllers
         [Route("token")]
         public IActionResult Get()
         {
-            var tokenInfo = GenerateToken("burion", "mypassword");
-
-            return new JsonResult(tokenInfo); 
-        }
-
-        private dynamic GenerateToken(string login, string password)
-        {
             //TOTO DI
             var usersService = new MockUsersService();
 
-            if(usersService.VerifyPassword(login, password))
+            if (usersService.VerifyPassword("hello", "passowrd"))
             {
-                var user = usersService.GetUserByLogin(login);
-
-                var claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.Name, user.Login),
-                    new Claim(ClaimTypes.GivenName, user.DisplayedName),
-                    new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(2)).ToUnixTimeSeconds().ToString())
-                };
-
-                var jwtHeader = new JwtHeader(
-                    new SigningCredentials(
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("THISISMYKEYTHISISMYKEY")),
-                        SecurityAlgorithms.HmacSha256)
-                    );
-                var jwtPayload = new JwtPayload(claims);
-                var token = new JwtSecurityToken(jwtHeader, jwtPayload);
-
-                var output = new
-                {
-                    Acess_Token = new JwtSecurityTokenHandler().WriteToken(token),
-                    UserName = user.Login
-                };
-
-                return output;
+                var tokenInfo = GenerateToken("burion");
+                return new JsonResult(tokenInfo); 
             }
-            throw new ArgumentException();
+
+            return new BadRequestResult();
+        }
+
+        private dynamic GenerateToken(string login)
+        {
+            var usersService = new MockUsersService();
+            var user = usersService.GetUserByLogin(login);
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Login),
+                new Claim(ClaimTypes.GivenName, user.DisplayedName),
+                new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
+                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(2)).ToUnixTimeSeconds().ToString())
+            };
+
+            var jwtHeader = new JwtHeader(
+                new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes("THISISMYKEYTHISISMYKEY")),
+                    SecurityAlgorithms.HmacSha256)
+                );
+            var jwtPayload = new JwtPayload(claims);
+            var token = new JwtSecurityToken(jwtHeader, jwtPayload);
+
+            var output = new
+            {
+                Acess_Token = new JwtSecurityTokenHandler().WriteToken(token),
+                UserName = user.Login
+            };
+
+            return output;
         }
     }
 }
