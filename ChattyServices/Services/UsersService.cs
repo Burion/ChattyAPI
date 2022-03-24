@@ -43,7 +43,7 @@ namespace ChattyServices.Services
         {
             //TODO mapping
             //TODO defalut picture configurations
-            var userToAdd = new User() { Login = user.Login, ProfilePicturePath = "default.jpg", Password = MD5Encrypter.Encode(user.Password) };
+            var userToAdd = new User() { Login = user.Login, DisplayedName = "", ProfilePicturePath = "default.jpg", Password = MD5Encrypter.Encode(user.Password) };
             
             if(_usersAccesser.GetItem(u => u.Login == user.Login) != null)
             {
