@@ -10,6 +10,5 @@ namespace ChattyServices.Dtos
     {
         public string Login { get; set; }
         public string Password { get; set; }
-
     }
 }
