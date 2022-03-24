@@ -20,12 +20,14 @@ namespace ChattyAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("{userId}")]
+        [HttpGet]
         public IActionResult Get(string userId)
         {
+            var userName = User.Identity.Name;
+
             var chatsService = new ChatsService();
 
-            return new JsonResult(chatsService.GetChatsForUser(userId));
+            return new JsonResult(chatsService.GetChatsForUser(userName));
         }
     }
 }
