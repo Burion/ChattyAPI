@@ -25,6 +25,11 @@ namespace ChattyServices.Services
             };
         }
 
+        public UserDto RegisterUser(UserRegisterModel user)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VerifyPassword(string login, string password)
         {
             return true;

@@ -1,7 +1,9 @@
 ﻿using ChattyDAL.Data;
 using ChattyDAL.Models;
+using ChattyServices.Cryptography;
 using ChattyServices.Dtos;
 using ChattyServices.Interfaces;
+using ChattyServices.ServiceErrors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +36,26 @@ namespace ChattyServices.Services
             }
 
             //TODO mapping
-            return new UserDto() { Login = user.Login, DisplayedName = user.DisplyedName, ProfilePicture = user.ProfilePicturePath };
+            return new UserDto() { Login = user.Login, DisplayedName = user.DisplayedName, ProfilePicture = user.ProfilePicturePath };
+        }
+
+        public UserDto RegisterUser(UserRegisterModel user)
+        {
+            //TODO mapping
+            //TODO defalut picture configurations
+            var userToAdd = new User() { Login = user.Login, ProfilePicturePath = "default.jpg", Password = MD5Encrypter.Encode(user.Password) };
+            
+            if(_usersAccesser.GetItem(u => u.Login == user.Login) != null)
+            {
+                throw new ItemAlreadyExistException();
+            }
+
+            var addedUser = _usersAccesser.AddItem(userToAdd);
+
+            var userToReturn = new UserDto() { Login = addedUser.Login, DisplayedName = addedUser.DisplayedName, ProfilePicture = addedUser.ProfilePicturePath };
+            //TODO mapping
+
+            return userToReturn;
         }
 
         public bool VerifyPassword(string login, string password)
@@ -46,7 +67,7 @@ namespace ChattyServices.Services
                 throw new ArgumentException();
             }
 
-            var hashedPassword = password.GetHashCode().ToString();
+            var hashedPassword = MD5Encrypter.Encode(password);
 
             return hashedPassword == user.Password;
         }

@@ -13,5 +13,6 @@ namespace ChattyServices.Interfaces
         UserDto GetUserByLogin(string login);
         bool VerifyPassword(string login, string password);
         UserDto CreateUser(UserDto user);
+        UserDto RegisterUser(UserRegisterModel user);
     }
 }
