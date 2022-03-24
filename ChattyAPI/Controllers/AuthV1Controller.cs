@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ChattyServices.Dtos;
+using ChattyServices.ServiceErrors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,19 +20,36 @@ namespace ChattyAPI.Controllers
     public class AuthV1Controller : ControllerBase
     {
         [HttpGet]
-        [Route("token")]
-        public IActionResult Get()
+        public IActionResult Get([FromBody] UserLoginModel userModel)
         {
             //TOTO DI
-            var usersService = new MockUsersService();
+            var usersService = new UsersService();
 
-            if (usersService.VerifyPassword("hello", "passowrd"))
+            if (usersService.VerifyPassword(userModel.Login, userModel.Password))
             {
-                var tokenInfo = GenerateToken("burion");
+                var tokenInfo = GenerateToken(userModel.Login);
                 return new JsonResult(tokenInfo); 
             }
 
-            return new BadRequestResult();
+            return BadRequest("Invalid credentials");
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] UserRegisterModel userToRegister)
+        {
+            //TODO DI 
+            var usersService = new UsersService();
+
+            try
+            {
+                var user = usersService.RegisterUser(userToRegister);
+
+                return new JsonResult(user);
+            }
+            catch(ItemAlreadyExistException ex)
+            {
+                return BadRequest("This user already exists");
+            }
         }
 
         private dynamic GenerateToken(string login)
