@@ -19,8 +19,9 @@ namespace ChattyAPI.Controllers
     [ApiController]
     public class AuthV1Controller : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get([FromBody] UserLoginModel userModel)
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Post ([FromBody] UserLoginModel userModel)
         {
             //TOTO DI
             var usersService = new UsersService();
@@ -35,6 +36,7 @@ namespace ChattyAPI.Controllers
         }
 
         [HttpPost]
+        [Route("register")]
         public IActionResult Post([FromBody] UserRegisterModel userToRegister)
         {
             //TODO DI 
@@ -54,7 +56,7 @@ namespace ChattyAPI.Controllers
 
         private dynamic GenerateToken(string login)
         {
-            var usersService = new MockUsersService();
+            var usersService = new UsersService();
             var user = usersService.GetUserByLogin(login);
 
             var claims = new List<Claim>()
