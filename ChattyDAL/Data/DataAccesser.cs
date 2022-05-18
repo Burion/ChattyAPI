@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ChattyDAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ChattyDAL.Data
 {
-    public class DataAccesser<T> where T: class
+    public class DataAccesser<T> : IDataAccesser<T> where T: class
     {
         readonly ChattyContext _context;
         public DataAccesser() 

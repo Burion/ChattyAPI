@@ -1,4 +1,6 @@
-﻿using ChattyDAL.Data;
+﻿using AutoMapper;
+using ChattyDAL.Data;
+using ChattyDAL.Interfaces;
 using ChattyDAL.Models;
 using ChattyServices.Dtos;
 using ChattyServices.Interfaces;
@@ -13,10 +15,14 @@ namespace ChattyServices.Services
     public class MessagesService : IMessagesService
     {
         readonly DataAccesser<Message> dataAccesser;
+        private readonly IMapper _mapper;
+        private readonly IMessagesAccesser _messagesAccesser;
 
-        public MessagesService()
+        public MessagesService(IMapper mapper, IMessagesAccesser messagesAccesser)
         {
             dataAccesser = new DataAccesser<Message>();
+            _mapper = mapper;
+            _messagesAccesser = messagesAccesser;
         }
 
         public IEnumerable<MessageDto> GetMessagesForCurrentUser(string userId)
@@ -33,6 +39,18 @@ namespace ChattyServices.Services
             var messagesDtos = messages.Select(m => new MessageDto() { Author = m.AuthorLogin, Text = m.Text });
 
             return messagesDtos;
+        }
+
+        public MessageDto UpsertMessage(MessageDto message)
+        {
+            if (message == null)
+                throw new ArgumentNullException($"Message argument is null");
+
+            var messageToUpsert = _mapper.Map<Message>(message);
+            
+            var addedMessage = _messagesAccesser.UpsertMessage(messageToUpsert);
+
+            return _mapper.Map<MessageDto>(addedMessage);
         }
     }
 }

@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace ChattyServices.Interfaces
 {
-    interface IMessagesService
+    public interface IMessagesService
     {
         IEnumerable<MessageDto> GetMessagesForUsers(string firstUserId, string secondUserId);
         IEnumerable<MessageDto> GetMessagesForCurrentUser(string userId);
+        MessageDto UpsertMessage(MessageDto message);
     }
 }
