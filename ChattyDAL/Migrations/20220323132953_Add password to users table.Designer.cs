@@ -4,14 +4,16 @@ using ChattyDAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChattyDAL.Migrations
 {
     [DbContext(typeof(ChattyContext))]
-    partial class ChattyContextModelSnapshot : ModelSnapshot
+    [Migration("20220323132953_Add password to users table")]
+    partial class Addpasswordtouserstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +48,7 @@ namespace ChattyDAL.Migrations
                     b.Property<string>("Login")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("DisplayedName")
+                    b.Property<string>("DisplyedName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")

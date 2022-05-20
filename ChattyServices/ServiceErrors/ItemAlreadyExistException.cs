@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatsDAL.Data
+namespace ChattyServices.ServiceErrors
 {
-    class ChatsContext
+    public class ItemAlreadyExistException : Exception
     {
     }
 }

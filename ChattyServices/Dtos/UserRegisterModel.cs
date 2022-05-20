@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChattyDAL.Models
+namespace ChattyServices.Dtos
 {
-    public class User
+    public class UserRegisterModel
     {
         public string Login { get; set; }
-        public string DisplayedName { get; set; }
-        public string ProfilePicturePath { get; set; }
         public string Password { get; set; }
     }
 }
