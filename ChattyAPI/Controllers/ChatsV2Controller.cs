@@ -21,9 +21,7 @@ namespace ChattyAPI.Controllers
         [HttpGet("{userId}")]
         public IActionResult Get(string userId)
         {
-            var chatsService = new ChatsService();
-
-            return new JsonResult(chatsService.GetChatsForUser(userId));
+            throw new NotImplementedException();
         }
     }
 }

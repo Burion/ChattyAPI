@@ -25,9 +25,11 @@ namespace ChattyServices.Services
             _messagesAccesser = messagesAccesser;
         }
 
-        public Task<IEnumerable<MessageDto>> GetMessagesForCurrentUser(string userId)
+        public async Task<IEnumerable<MessageDto>> GetMessagesForUser(string userId)
         {
-            throw new NotImplementedException();
+            var messages = await _messagesAccesser.GetMessages(m => m.AuthorId == userId || m.ReceiverId == userId);
+
+            return _mapper.Map<IEnumerable<MessageDto>>(messages);
         }
 
         public async Task<IEnumerable<MessageDto>> GetMessagesForUsers(string firstUserId, string secondUserId)

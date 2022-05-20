@@ -11,7 +11,7 @@ namespace ChattyServices.Interfaces
     public interface IMessagesService
     {
         Task<IEnumerable<MessageDto>> GetMessagesForUsers(string firstUserId, string secondUserId);
-        Task<IEnumerable<MessageDto>> GetMessagesForCurrentUser(string userId);
+        Task<IEnumerable<MessageDto>> GetMessagesForUser(string userId);
         Task<MessageDto> UpsertMessage(MessageDto message);
     }
 }

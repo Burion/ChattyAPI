@@ -9,6 +9,6 @@ namespace ChattyServices.Interfaces
 {
     public interface IChatsService
     {
-        public IEnumerable<ChatDto> GetChatsForUser(string userId);
+        public Task<IEnumerable<ChatDto>> GetChatsForUser(string userId);
     }
 }

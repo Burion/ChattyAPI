@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ChattyServices.Interfaces;
 using ChattyServices.Services;
+using ChattyServices.Dtos;
 
 namespace ChattyAPI.Controllers
 {
@@ -13,17 +14,19 @@ namespace ChattyAPI.Controllers
     [ApiController]
     public class ChatsV1Controller : ControllerBase
     {
-        public ChatsV1Controller()
-        {
+        private readonly IChatsService _chatsService;
 
+        public ChatsV1Controller(IChatsService chatsService)
+        {
+            _chatsService = chatsService;
         }
 
         [HttpGet("{userId}")]
-        public IActionResult Get(int userId)
+        public async Task<IEnumerable<ChatDto>> Get(string userId)
         {
-            var chatsService = new ChatsService();
+            var chats = await _chatsService.GetChatsForUser(userId);
 
-            return new JsonResult(chatsService.GetChatsForUser("Vlad"));
+            return chats;
         }
     }
 }

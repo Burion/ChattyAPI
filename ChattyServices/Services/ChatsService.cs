@@ -12,22 +12,16 @@ namespace ChattyServices.Services
 {
     public class ChatsService : IChatsService
     {
-        public IEnumerable<ChatDto> GetChatsForUser(string userId)
+        private readonly IMessagesService _messagesService;
+
+        public ChatsService(IMessagesService messagesService)
         {
-            var messagesAccesser = new DataAccesser<Message>();
-            
-            var messages = messagesAccesser.GetItems(i => i.ReceiverId == userId || i.AuthorId == userId);
+            _messagesService = messagesService;
+        }
 
-            //var messages = new Message[]
-            //{
-            //    new Message() { AuthorLogin = "Vlad", ReceiverLogin = "John", SendingDate = new DateTime(2022, 3, 4), Text = "Not last messge"},
-            //    new Message() { AuthorLogin = "Vlad", ReceiverLogin = "John", SendingDate = new DateTime(2022, 3, 5), Text = "Last message"},
-            //    new Message() { AuthorLogin = "John", ReceiverLogin = "Vlad", SendingDate = new DateTime(2022, 3, 2), Text = "Not last message"},
-            //    new Message() { AuthorLogin = "Alex", ReceiverLogin = "Vlad", SendingDate = new DateTime(2022, 2, 10), Text = "Not last message"},
-            //    new Message() { AuthorLogin = "Vlad", ReceiverLogin = "Alex", SendingDate = new DateTime(2022, 2, 11), Text = "Not last message"},
-            //    new Message() { AuthorLogin = "Vlad", ReceiverLogin = "Alex", SendingDate = new DateTime(2022, 2, 15), Text = "Last message"},
-
-            //};
+        public async Task<IEnumerable<ChatDto>> GetChatsForUser(string userId)
+        {
+            var messages = await _messagesService.GetMessagesForUser(userId);
 
             var lastMessags = messages.GroupBy(
                 m => String.Compare(m.AuthorId, m.ReceiverId) > 0

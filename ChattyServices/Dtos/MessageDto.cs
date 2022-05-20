@@ -13,5 +13,6 @@ namespace ChattyServices.Dtos
         public string AuthorId { get; set; }
         public string ReceiverId { get; set; }
         public string Text { get; set; }
+        public DateTime SendingDate { get; set; }
     }
 }

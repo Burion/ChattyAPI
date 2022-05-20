@@ -48,6 +48,8 @@ namespace ChattyAPI
             services.AddTransient<IMessagesService, MessagesService>();
             services.AddTransient<IMessagesAccesser, MessagesCosmosAccesser>();
 
+            services.AddTransient<IChatsService, ChatsService>();
+
             services.AddTransient(services =>
             {
                 var cosmosUrl = Configuration.GetValue<string>("DatabaseUrl");
