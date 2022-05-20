@@ -16,7 +16,7 @@ namespace ChattyServices.Services
         {
             var messagesAccesser = new DataAccesser<Message>();
             
-            var messages = messagesAccesser.GetItems(i => i.ReceiverLogin == userId || i.AuthorLogin == userId);
+            var messages = messagesAccesser.GetItems(i => i.ReceiverId == userId || i.AuthorId == userId);
 
             //var messages = new Message[]
             //{
@@ -30,12 +30,12 @@ namespace ChattyServices.Services
             //};
 
             var lastMessags = messages.GroupBy(
-                m => String.Compare(m.AuthorLogin, m.ReceiverLogin) > 0
-                    ? new { First = m.AuthorLogin, Second = m.ReceiverLogin }
-                    : new { First = m.ReceiverLogin, Second = m.AuthorLogin }
+                m => String.Compare(m.AuthorId, m.ReceiverId) > 0
+                    ? new { First = m.AuthorId, Second = m.ReceiverId }
+                    : new { First = m.ReceiverId, Second = m.AuthorId }
                     , (key, g) => g.OrderByDescending(m => m.SendingDate).First());
 
-            var chats = lastMessags.Select(m => new ChatDto() { Name = m.AuthorLogin != userId ? m.AuthorLogin : m.ReceiverLogin, LastMessage = new MessageDto() { Author = m.AuthorLogin, Text = m.Text } });
+            var chats = lastMessags.Select(m => new ChatDto() { Name = m.AuthorId != userId ? m.AuthorId : m.ReceiverId, LastMessage = new MessageDto() { AuthorId = m.AuthorId, Text = m.Text } });
 
             return chats;
         }

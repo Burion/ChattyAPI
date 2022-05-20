@@ -10,8 +10,8 @@ namespace ChattyServices.Interfaces
 {
     public interface IMessagesService
     {
-        IEnumerable<MessageDto> GetMessagesForUsers(string firstUserId, string secondUserId);
-        IEnumerable<MessageDto> GetMessagesForCurrentUser(string userId);
-        MessageDto UpsertMessage(MessageDto message);
+        Task<IEnumerable<MessageDto>> GetMessagesForUsers(string firstUserId, string secondUserId);
+        Task<IEnumerable<MessageDto>> GetMessagesForCurrentUser(string userId);
+        Task<MessageDto> UpsertMessage(MessageDto message);
     }
 }

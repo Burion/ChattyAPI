@@ -1,5 +1,6 @@
 ﻿using ChattyDAL.Interfaces;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,36 +10,40 @@ using System.Threading.Tasks;
 
 namespace ChattyDAL.Data
 {
-    public class DataAccesserCosmos<T> : IDataAccesser<T> where T: class
+    public class DataAccesserCosmos<T> : IDataAccesserAsync<T> where T: class
     {
-        private readonly CosmosClient _client;
+        private readonly Container _container;
 
-        public DataAccesserCosmos(CosmosClient client)
+        public DataAccesserCosmos(Container container)
         {
-            _client = client;
+            _container = container;
         }
 
-        public T AddItem(T item)
+        public async Task<T> AddItem(T item)
         {
-            throw new NotImplementedException();
+            var responceItem = await _container.CreateItemAsync(item);
+
+            return responceItem;
         }
 
-        public T DeleteItem(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T GetItem(Expression<Func<T, bool>> predicate)
+        public Task<T> DeleteItem(T item)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetItems(Expression<Func<T, bool>> predicate)
+        public Task<T> GetItem(Expression<Func<T, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public T UpdateItem(T item)
+        public async Task<IEnumerable<T>> GetItems(Expression<Func<T, bool>> predicate)
+        {
+            var responce = await _container.GetItemLinqQueryable<T>(true).Where(predicate).ToFeedIterator().ReadNextAsync();
+            
+            return (IEnumerable<T>)responce;
+        }
+
+        public Task<T> UpdateItem(T item)
         {
             throw new NotImplementedException();
         }

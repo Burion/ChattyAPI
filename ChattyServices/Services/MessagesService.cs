@@ -25,30 +25,30 @@ namespace ChattyServices.Services
             _messagesAccesser = messagesAccesser;
         }
 
-        public IEnumerable<MessageDto> GetMessagesForCurrentUser(string userId)
+        public Task<IEnumerable<MessageDto>> GetMessagesForCurrentUser(string userId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<MessageDto> GetMessagesForUsers(string firstUserId, string secondUserId)
+        public async Task<IEnumerable<MessageDto>> GetMessagesForUsers(string firstUserId, string secondUserId)
         {
-            var messages = dataAccesser.GetItems(m => 
-                (m.AuthorLogin == firstUserId && m.ReceiverLogin == secondUserId) 
-                || (m.AuthorLogin == secondUserId && m.ReceiverLogin == firstUserId));
+            var messages = await _messagesAccesser.GetMessages(m => 
+                (m.AuthorId == firstUserId && m.ReceiverId == secondUserId) 
+                || (m.AuthorId == secondUserId && m.ReceiverId == firstUserId));
 
-            var messagesDtos = messages.Select(m => new MessageDto() { Author = m.AuthorLogin, Text = m.Text });
+            var messagesDtos = _mapper.Map<IEnumerable<MessageDto>>(messages);
 
             return messagesDtos;
         }
 
-        public MessageDto UpsertMessage(MessageDto message)
+        public async Task<MessageDto> UpsertMessage(MessageDto message)
         {
             if (message == null)
                 throw new ArgumentNullException($"Message argument is null");
 
             var messageToUpsert = _mapper.Map<Message>(message);
             
-            var addedMessage = _messagesAccesser.UpsertMessage(messageToUpsert);
+            var addedMessage = await _messagesAccesser.UpsertMessage(messageToUpsert);
 
             return _mapper.Map<MessageDto>(addedMessage);
         }

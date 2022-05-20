@@ -1,7 +1,14 @@
+using ChattyAPI.Helpers;
+using ChattyAPI.Helpers.Extensions;
+using ChattyDAL.Data;
+using ChattyDAL.Interfaces;
+using ChattyServices.Interfaces;
+using ChattyServices.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +41,19 @@ namespace ChattyAPI
                         .AllowAnyMethod()
                         .AllowAnyOrigin();
                 });
+            });
+
+            services.AddMapper(new MappingProfile());
+
+            services.AddTransient<IMessagesService, MessagesService>();
+            services.AddTransient<IMessagesAccesser, MessagesCosmosAccesser>();
+
+            services.AddTransient(services =>
+            {
+                var cosmosUrl = Configuration.GetValue<string>("DatabaseUrl");
+                var cosmosKey = Configuration.GetValue<string>("CosmosKey");
+
+                return new CosmosClient(cosmosUrl, cosmosKey);
             });
 
             services.AddControllers();

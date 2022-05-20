@@ -20,7 +20,7 @@ namespace ChattyDAL.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>().HasKey(u => u.Login);
-            modelBuilder.Entity<Message>().HasKey(m => new { m.AuthorLogin, m.ReceiverLogin, m.SendingDate });
+            modelBuilder.Entity<Message>().HasKey(m => new { m.AuthorId, m.ReceiverId, m.SendingDate });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

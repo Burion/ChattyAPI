@@ -1,4 +1,6 @@
-﻿using ChattyServices.Services;
+﻿using ChattyServices.Dtos;
+using ChattyServices.Interfaces;
+using ChattyServices.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,13 +14,27 @@ namespace ChattyAPI.Controllers
     [ApiController]
     public class MessagesV1Controller : ControllerBase
     {
-        //[HttpGet("{firstUserLogin}/{secondUserLogin}")]
-        public IActionResult Get([FromQuery] string firstUserId, [FromQuery] string secondUserId)
-        {
-            var messagesService = new MessagesService();
-            var messagesDtos = messagesService.GetMessagesForUsers(firstUserId, secondUserId);
+        private readonly IMessagesService _messagesService;
 
-            return new JsonResult(messagesDtos);
+        public MessagesV1Controller(IMessagesService messagesService)
+        {
+            _messagesService = messagesService;
+        }
+
+        //[HttpGet("{firstUserLogin}/{secondUserLogin}")]
+        public async Task<IEnumerable<MessageDto>> Get([FromQuery] string firstUserId, [FromQuery] string secondUserId)
+        {
+            var messages = await _messagesService.GetMessagesForUsers(firstUserId, secondUserId);
+
+            return messages;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] MessageDto message)
+        {
+            var upsertedMessage = await _messagesService.UpsertMessage(message);
+
+            return new JsonResult(upsertedMessage);
         }
     }
 }

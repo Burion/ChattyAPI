@@ -3,6 +3,7 @@ using ChattyDAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +25,11 @@ namespace ChattyDAL.Data
             return item;
         }
 
+        public Task<IEnumerable<Message>> GetMessages(Expression<Func<Message, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
         public Message UpsertMessage(Message message)
         {
             if (string.IsNullOrEmpty(message.Id))
@@ -35,6 +41,16 @@ namespace ChattyDAL.Data
             }
 
             return dataAccesser.UpdateItem(message);
+        }
+
+        Task<Message> IMessagesAccesser.GetMessage(Message message)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Message> IMessagesAccesser.UpsertMessage(Message message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -21,8 +21,8 @@ namespace Chatty.UnitTests
         {
             message = new Message()
             {
-                AuthorLogin = "author_login",
-                ReceiverLogin = "receiver_login",
+                AuthorId = "author_login",
+                ReceiverId = "receiver_login",
                 SendingDate = new DateTime(2022, 1, 1),
                 Text = "message_text"
             };
@@ -42,7 +42,7 @@ namespace Chatty.UnitTests
             var mapper = mapperConfig.CreateMapper();
 
             var messageDataAccesser = new Mock<IMessagesAccesser>();
-            messageDataAccesser.Setup(mda => mda.GetMessage(It.IsAny<Message>())).Returns(It.IsAny<Message>());
+            //messageDataAccesser.Setup(mda => mda.GetMessage(It.IsAny<Message>())).Returns(It.IsAny<Message>());
 
             var messagesService = new MessagesService(mapper, messageDataAccesser.Object);    
         }
