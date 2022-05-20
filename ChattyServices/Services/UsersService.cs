@@ -1,4 +1,6 @@
-﻿using ChattyDAL.Data;
+﻿using AutoMapper;
+using ChattyDAL.Data;
+using ChattyDAL.Interfaces;
 using ChattyDAL.Models;
 using ChattyServices.Cryptography;
 using ChattyServices.Dtos;
@@ -14,58 +16,52 @@ namespace ChattyServices.Services
 {
     public class UsersService : IUsersService
     {
-        private readonly DataAccesser<User> _usersAccesser;
+        private readonly IUsersAccesser _usersAccesser;
+        private readonly IMapper _mapper;
 
-        public UsersService()
+        public UsersService(IUsersAccesser usersAccesser, IMapper mapper)
         {
-            _usersAccesser = new DataAccesser<User>();
+            _usersAccesser = usersAccesser;
+            _mapper = mapper;
         }
 
-        public UserDto CreateUser(UserDto user)
+        public async Task<UserDto> CreateUser(UserDto user)
         {
             throw new NotImplementedException();
         }
 
-        public UserDto GetUserByLogin(string login)
+        public async Task<UserDto> GetUserByLogin(string login)
         {
-            var user = _usersAccesser.GetItem(u => u.Login == login);
+            var user = await _usersAccesser.GetUser(u => u.Login == login);
+            
+            if (user == null)
+                throw new KeyNotFoundException();
 
-            if(user == null)
-            {
-                throw new ArgumentException();
-            }
-
-            //TODO mapping
-            return new UserDto() { Login = user.Login, DisplayedName = user.DisplayedName, ProfilePicture = user.ProfilePicturePath };
+            return _mapper.Map<UserDto>(user);
         }
 
-        public UserDto RegisterUser(UserRegisterModel user)
+        public async Task<UserDto> RegisterUser(UserRegisterModel user)
         {
-            //TODO mapping
-            //TODO defalut picture configurations
-            var userToAdd = new User() { Login = user.Login, DisplayedName = "", ProfilePicturePath = "default.jpg", Password = MD5Encrypter.Encode(user.Password) };
-            
-            if(_usersAccesser.GetItem(u => u.Login == user.Login) != null)
+            if(_usersAccesser.GetUser(u => u.Login == user.Login) != null)
             {
                 throw new ItemAlreadyExistException();
             }
+            
+            var userToAdd = _mapper.Map<UserRegisterModel, User>(user);
 
-            var addedUser = _usersAccesser.AddItem(userToAdd);
+            userToAdd.Password = MD5Encrypter.Encode(user.Password);
+            
+            var addedUser = await _usersAccesser.UpsertUser(userToAdd);
 
-            var userToReturn = new UserDto() { Login = addedUser.Login, DisplayedName = addedUser.DisplayedName, ProfilePicture = addedUser.ProfilePicturePath };
-            //TODO mapping
-
-            return userToReturn;
+            return _mapper.Map<UserDto>(addedUser);
         }
 
-        public bool VerifyPassword(string login, string password)
+        public async Task<bool> VerifyPassword(string login, string password)
         {
-            var user = _usersAccesser.GetItem(u => u.Login == login);
+            var user = await _usersAccesser.GetUser(u => u.Login == login);
 
             if(user == null)
-            {
-                throw new ArgumentException();
-            }
+                throw new KeyNotFoundException();
 
             var hashedPassword = MD5Encrypter.Encode(password);
 

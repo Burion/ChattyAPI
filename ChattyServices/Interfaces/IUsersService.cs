@@ -10,9 +10,9 @@ namespace ChattyServices.Interfaces
 {
     interface IUsersService
     {
-        UserDto GetUserByLogin(string login);
-        bool VerifyPassword(string login, string password);
-        UserDto CreateUser(UserDto user);
-        UserDto RegisterUser(UserRegisterModel user);
+        Task<UserDto> GetUserByLogin(string login);
+        Task<bool> VerifyPassword(string login, string password);
+        Task<UserDto> CreateUser(UserDto user);
+        Task<UserDto> RegisterUser(UserRegisterModel user);
     }
 }
