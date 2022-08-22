@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using ChattyServices.Interfaces;
 using ChattyServices.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using AutoMapper;
 
 namespace ChattyAPI.Controllers
 {
@@ -14,16 +16,25 @@ namespace ChattyAPI.Controllers
     [ApiController]
     public class ChatsV2Controller : ControllerBase
     {
-        public ChatsV2Controller()
-        {
+        private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
+        public ChatsV2Controller(IConfiguration configuration, IMapper mapper)
+        {
+            _configuration = configuration;
+            _mapper = mapper;
         }
 
-        [Authorize]
         [HttpGet]
-        public IActionResult Get(string userId)
+        public async Task<dynamic> Get([FromQuery] string echo)
         {
-            throw new NotImplementedException();
+            var dict = new Dictionary<string, string>()
+            {
+                ["VivintEnergy"] = "vivint-energy-opp-id",
+                ["SmartHome"] = "vivint-smart-home-opp-id"
+            };
+
+            return new { Message = dict };
         }
     }
 }

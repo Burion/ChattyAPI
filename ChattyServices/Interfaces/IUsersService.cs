@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace ChattyServices.Interfaces
 {
-    interface IUsersService
+    public interface IUsersService
     {
         Task<UserDto> GetUserByLogin(string login);
+        Task<IEnumerable<UserDto>> SearchUsersByLogin(string query);
         Task<bool> VerifyPassword(string login, string password);
         Task<UserDto> CreateUser(UserDto user);
-        Task<UserDto> RegisterUser(UserRegisterModel user);
+        Task<UserDto> RegisterUser(UserWithPasswordDto user);
+        Task<UserDto> UpdateUser(UserDto user);
+        Task<string> ChangePassword(string userId, string password);
     }
 }

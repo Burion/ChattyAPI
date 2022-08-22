@@ -53,6 +53,9 @@ namespace ChattyAPI
 
             services.AddTransient<IChatsService, ChatsService>();
 
+            services.AddTransient<IUsersAccesser, UsersCosmosAccesser>();
+            services.AddTransient<IUsersService, UsersService>();
+
             services.AddTransient(services =>
             {
                 var cosmosUrl = Configuration.GetValue<string>("DatabaseUrl");
@@ -66,6 +69,7 @@ namespace ChattyAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ChattyAPI", Version = "v1" });
             });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = "JwtBearer";

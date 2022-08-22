@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ChattyServices.Dtos
 {
-    public class UserRegisterModel
+    public class UserWithPasswordDto : UserDto
     {
-        public string Login { get; set; }
         public string Password { get; set; }
     }
 }

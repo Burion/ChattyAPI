@@ -10,8 +10,9 @@ namespace ChattyDAL.Interfaces
 {
     public interface IUsersAccesser
     {
-        Task<User> UpsertUser(User user);
+        Task<User> InsertUser(User user);
+        Task<User> UpdateUser(User user);   
         Task<User> GetUser(Expression<Func<User, bool>> predicate);
-        Task<IEnumerable<User>> GetUsers(Expression<Func<User, bool>> predicate);
+        Task<IEnumerable<User>> GetUsers(Expression<Func<User, bool>> predicate); 
     }
 }

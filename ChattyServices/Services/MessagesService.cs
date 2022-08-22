@@ -49,6 +49,7 @@ namespace ChattyServices.Services
                 throw new ArgumentNullException($"Message argument is null");
 
             var messageToUpsert = _mapper.Map<Message>(message);
+            messageToUpsert.SendingDate = DateTime.Now;
             
             var addedMessage = await _messagesAccesser.UpsertMessage(messageToUpsert);
 

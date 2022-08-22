@@ -10,6 +10,11 @@ namespace ChattyServices.Services
 {
     public class MockUsersService : IUsersService
     {
+        public Task<string> ChangePassword(string userId, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public UserDto CreateUser(UserDto user)
         {
             throw new NotImplementedException();
@@ -25,7 +30,17 @@ namespace ChattyServices.Services
             };
         }
 
-        public UserDto RegisterUser(UserRegisterModel user)
+        public UserDto RegisterUser(UserWithPasswordDto user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<UserDto>> SearchUsersByLogin(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UserDto> UpdateUser(UserDto user)
         {
             throw new NotImplementedException();
         }
@@ -33,6 +48,26 @@ namespace ChattyServices.Services
         public bool VerifyPassword(string login, string password)
         {
             return true;
+        }
+
+        Task<UserDto> IUsersService.CreateUser(UserDto user)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<UserDto> IUsersService.GetUserByLogin(string login)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<UserDto> IUsersService.RegisterUser(UserWithPasswordDto user)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IUsersService.VerifyPassword(string login, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

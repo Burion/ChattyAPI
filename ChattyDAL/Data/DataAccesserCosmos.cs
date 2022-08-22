@@ -31,21 +31,23 @@ namespace ChattyDAL.Data
             throw new NotImplementedException();
         }
 
-        public Task<T> GetItem(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetItem(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            var responce = await _container.GetItemLinqQueryable<T>(true).Where(predicate).ToFeedIterator().ReadNextAsync();
+
+            return responce.FirstOrDefault();
         }
 
         public async Task<IEnumerable<T>> GetItems(Expression<Func<T, bool>> predicate)
         {
             var responce = await _container.GetItemLinqQueryable<T>(true).Where(predicate).ToFeedIterator().ReadNextAsync();
             
-            return (IEnumerable<T>)responce;
+            return responce;
         }
 
-        public Task<T> UpdateItem(T item)
+        public async Task<T> UpdateItem(T item)
         {
-            throw new NotImplementedException();
+            return await _container.UpsertItemAsync<T>(item);
         }
     }
 }

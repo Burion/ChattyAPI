@@ -1,0 +1,14 @@
+﻿C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Class1.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Cryptography\MD5Encrypter.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Dtos\ChatDto.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Dtos\MessageDto.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Dtos\UserDto.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Dtos\UserWithPasswordDto.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Interfaces\IChatsService.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Interfaces\IMessagesService.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Interfaces\IUsersService.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\ServiceErrors\ItemAlreadyExistException.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Services\ChatsService.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Services\MessagesService.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Services\MockUsersService.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyServices\Services\UsersService.cs

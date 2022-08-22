@@ -10,6 +10,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ChattyServices.Dtos;
 using ChattyServices.ServiceErrors;
+using ChattyServices.Interfaces;
+using AutoMapper;
+using ChattyAPI.Models;
+using ChappyAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,50 +23,65 @@ namespace ChattyAPI.Controllers
     [ApiController]
     public class AuthV1Controller : ControllerBase
     {
+        private readonly IUsersService _usersService;
+        private readonly IMapper _mapper;
+
+        public AuthV1Controller(IUsersService usersService, IMapper mapper)
+        {
+            _usersService = usersService;
+            _mapper = mapper;
+        }
+
         [HttpPost]
         [Route("login")]
-        public IActionResult Post ([FromBody] UserLoginModel userModel)
+        public async Task<JwtResponse> Post([FromBody] UserLoginModel userModel)
         {
-            //TOTO DI
-            var usersService = new UsersService();
-
-            if (usersService.VerifyPassword(userModel.Login, userModel.Password))
+            try
             {
-                var tokenInfo = GenerateToken(userModel.Login);
-                return new JsonResult(tokenInfo); 
-            }
+                if (await _usersService.VerifyPassword(userModel.Login, userModel.Password))
+                {
+                    var tokenInfo = await GenerateToken(userModel.Login);
+                
+                    return tokenInfo; 
+                }
 
-            return BadRequest("Invalid credentials");
+                return new JwtResponse()
+                {
+                    Message = "Invalid credentials"
+                };
+            }
+            catch
+            {
+                return new JwtResponse()
+                {
+                    Message = "Error"
+                };
+            }
         }
 
         [HttpPost]
         [Route("register")]
-        public IActionResult Post([FromBody] UserRegisterModel userToRegister)
+        public async Task<UserDto> Post([FromBody] UserRegisterModel userToRegister)
         {
-            //TODO DI 
-            var usersService = new UsersService();
-
             try
             {
-                var user = usersService.RegisterUser(userToRegister);
+                var user = await _usersService.RegisterUser(_mapper.Map<UserWithPasswordDto>(userToRegister));
 
-                return new JsonResult(user);
+                return user;
             }
             catch(ItemAlreadyExistException ex)
             {
-                return BadRequest("This user already exists");
+                throw;   
             }
         }
 
-        private dynamic GenerateToken(string login)
+        private async Task<JwtResponse> GenerateToken(string login)
         {
-            var usersService = new UsersService();
-            var user = usersService.GetUserByLogin(login);
+            var user = await _usersService.GetUserByLogin(login);
 
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.GivenName, user.DisplayedName),
                 new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
                 new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(2)).ToUnixTimeSeconds().ToString())
             };
@@ -75,10 +94,11 @@ namespace ChattyAPI.Controllers
             var jwtPayload = new JwtPayload(claims);
             var token = new JwtSecurityToken(jwtHeader, jwtPayload);
 
-            var output = new
+            var output = new JwtResponse
             {
-                Acess_Token = new JwtSecurityTokenHandler().WriteToken(token),
-                UserName = user.Login
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                UserName = user.Login, 
+                Message = "Success"
             };
 
             return output;

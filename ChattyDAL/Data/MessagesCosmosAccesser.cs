@@ -46,6 +46,8 @@ namespace ChattyDAL.Data
 
         public async Task<Message> UpsertMessage(Message message)
         {
+            message.Id = Guid.NewGuid().ToString();
+
             var item = await _dataAccesser.AddItem(message);
 
             return item;

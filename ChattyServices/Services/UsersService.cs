@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ChattyServices.Services
@@ -40,18 +41,25 @@ namespace ChattyServices.Services
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<UserDto> RegisterUser(UserRegisterModel user)
+        public async Task<IEnumerable<UserDto>> SearchUsersByLogin(string query)
         {
-            if(_usersAccesser.GetUser(u => u.Login == user.Login) != null)
+            var users = await _usersAccesser.GetUsers(u => u.Login.Contains(query, StringComparison.OrdinalIgnoreCase));
+
+            return _mapper.Map<IEnumerable<UserDto>>(users);
+        }
+
+        public async Task<UserDto> RegisterUser(UserWithPasswordDto user)
+        {
+            if(await _usersAccesser.GetUser(u => u.Login == user.Login) is not null)
             {
                 throw new ItemAlreadyExistException();
             }
             
-            var userToAdd = _mapper.Map<UserRegisterModel, User>(user);
+            var userToAdd = _mapper.Map<UserWithPasswordDto, User>(user);
 
             userToAdd.Password = MD5Encrypter.Encode(user.Password);
             
-            var addedUser = await _usersAccesser.UpsertUser(userToAdd);
+            var addedUser = await _usersAccesser.InsertUser(userToAdd);
 
             return _mapper.Map<UserDto>(addedUser);
         }
@@ -66,6 +74,28 @@ namespace ChattyServices.Services
             var hashedPassword = MD5Encrypter.Encode(password);
 
             return hashedPassword == user.Password;
+        }
+
+        public async Task<UserDto> UpdateUser(UserDto user)
+        {
+            var userToUpdate = await _usersAccesser.GetUser(u => u.Login == user.Login);
+
+            // TODO make up better logic 
+            userToUpdate.ProfilePicturePath = user.ProfilePicture;
+            userToUpdate.DisplayedName = user.DisplayedName;
+
+            var updatedUser = await _usersAccesser.UpdateUser(userToUpdate);
+
+            return _mapper.Map<UserDto>(updatedUser);
+        }
+
+        public async Task<string> ChangePassword(string userId, string password)
+        {
+            var userToUpdate = await _usersAccesser.GetUser(u => u.Login == userId);
+            userToUpdate.Password = MD5Encrypter.Encode(password);
+            var updatedUser = await _usersAccesser.UpdateUser(userToUpdate);
+
+            return userToUpdate.Password;
         }
     }
 }

@@ -1,0 +1,22 @@
+﻿C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Data\ChattyContext.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Data\DataAccesser.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Data\DataAccesserCosmos.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Data\MessagesAccesser.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Data\MessagesCosmosAccesser.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Data\UsersCosmosAccesser.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Interfaces\IDataAccesser.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Interfaces\IDataAccesserAsync.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Interfaces\IMessagesAccesser.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Interfaces\IMessagesCosmosAccesser.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Interfaces\IUsersAccesser.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Migrations\20220322124835_Initial.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Migrations\20220322124835_Initial.Designer.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Migrations\20220323132953_Add password to users table.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Migrations\20220323132953_Add password to users table.Designer.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Migrations\20220324121843_Fix naming.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Migrations\20220324121843_Fix naming.Designer.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Migrations\ChattyContextModelSnapshot.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Models\Configuration.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Models\Message.cs
+C:\Users\vburi\source\repos\.Vivint\Chatty\ChattyAPI\ChattyAPI\ChattyDAL\Models\User.cs
+C:\Users\vburi\.nuget\packages\microsoft.azure.cosmos\3.27.0\contentFiles\any\netstandard2.0\ThirdPartyNotice.txt
